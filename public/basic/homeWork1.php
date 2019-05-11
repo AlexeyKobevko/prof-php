@@ -2,6 +2,10 @@
 
 class Human
 {
+    protected $name = '';
+    protected $age = 0;
+    protected $dateOfBirth = '';
+
     public function __construct($name, $age, $dateOfBirth)
     {
         $this->name = $name;
@@ -18,7 +22,11 @@ class Human
 $hum = new Human('Alex', 33, '1985-05-10');
 $hum->displayInfo();
 
-class Employee extends Human {
+class Employee extends Human
+{
+    protected $salary = 0;
+    protected $department = '';
+
     public function __construct($name, $age, $dateOfBirth, $salary, $department)
     {
         parent::__construct($name, $age, $dateOfBirth);
@@ -40,17 +48,19 @@ $emp->displayInfo();
 
 class Manager extends Employee
 {
+    protected $developers;
+
     public function __construct($name, $age, $dateOfBirth, $salary, $department)
     {
         parent::__construct($name, $age, $dateOfBirth, $salary, $department);
         $this->developers = [];
     }
 
-    public function addSlave($developer) {
+    public function addSlave(Developer $developer) {
         $this->developers[] = $developer;
     }
 
-    public function deleteSlave($developer) {
+    public function deleteSlave(Developer $developer) {
         $slave = array_search($developer, $this->developers);
         unset($this->developers[$slave]);
         array_values($this->developers);
@@ -59,13 +69,15 @@ class Manager extends Employee
 
 class Developer extends Employee
 {
+    protected $manager;
+
     public function __construct($name, $age, $dateOfBirth, $salary, $department)
     {
         parent::__construct($name, $age, $dateOfBirth, $salary, $department);
         $this->manager = null;
     }
 
-    public function changeManager($manager) {
+    public function changeManager(Manager $manager) {
         if ($this->manager) {
             $this->manager = null;
         } else {
