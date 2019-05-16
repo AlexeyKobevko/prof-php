@@ -2,9 +2,9 @@
 
 class Human
 {
-    protected $name = '';
-    protected $age = 0;
-    protected $dateOfBirth = '';
+    protected $name;
+    protected $age;
+    protected $dateOfBirth;
 
     public function __construct($name, $age, $dateOfBirth)
     {
@@ -24,8 +24,8 @@ $hum->displayInfo();
 
 class Employee extends Human
 {
-    protected $salary = 0;
-    protected $department = '';
+    protected $salary;
+    protected $department;
 
     public function __construct($name, $age, $dateOfBirth, $salary, $department)
     {
