@@ -4,7 +4,7 @@
 namespace app\models;
 
 
-class Cart extends Model
+class Basket extends Model
 {
     public $id;
     public $userId;
@@ -13,6 +13,6 @@ class Cart extends Model
 
     public function getTableName()
     {
-        return 'cart';
+        return 'baskets';
     }
 }

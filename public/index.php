@@ -1,21 +1,16 @@
 <?php
 
 
-use app\models\{ Products };
-use app\engine\{ Autoload, Db };
+use app\models\{ Products, Users };
+use app\engine\Autoload;
 
 
 include "../engine/Autoload.php";
+include "../config/main.php";
 
 spl_autoload_register([new Autoload(), 'loadClass']);
 
 
-$product = new Products(new Db());
-$user = new \app\models\Users(new Db());
+$product = new Products('Плюшки', 'В лучших традициях Фрёкен Бок', 252, 1);
 
-var_dump($product);
-var_dump($user);
-
-var_dump($product->getOne(1));
-
-var_dump($product instanceof Products);
+$product->insert();

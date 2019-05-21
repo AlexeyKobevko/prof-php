@@ -10,10 +10,11 @@ class Order extends Model
     public $userId;
     public $address;
     public $dateCreate;
+    public $dateChange;
     public $status;
 
     public function getTableName()
     {
-        return 'order';
+        return 'orders';
     }
 }
