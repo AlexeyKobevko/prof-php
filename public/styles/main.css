@@ -1,0 +1,170 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+button {
+    cursor: pointer;
+}
+
+h1 {
+    text-align: center;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.gallery, .catalog, .pagination {
+    display: flex;
+    justify-content: space-between;
+    width: 1100px;
+    flex-wrap: wrap;
+}
+
+.catalog-item {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    margin-bottom: 20px;
+}
+.catalog-item:hover {
+    box-shadow: 10px 10px 5px 0 rgba(0, 0, 0, 0.75);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100px;
+    background-image: url("../img/header1.jpg");
+    background-size: cover;
+    background-position: center;
+    opacity: 0.8;
+}
+
+.logo {
+    height: inherit;
+}
+.logo img {
+    height: 80px;
+}
+
+.main-menu {
+    list-style-type: none;
+}
+.main-menu .main-menu-item {
+    display: inline-block;
+    margin-right: 15px;
+    transition: all ease-out 0.3s;
+}
+.main-menu .main-menu-item:hover {
+    transform: scale(1.2);
+}
+.main-menu .main-menu-item .main-menu-item-link {
+    text-decoration: none;
+    color: white;
+    font-size: 1rem;
+    text-transform: uppercase;
+    transition: all ease-out 0.3s;
+}
+.main-menu .main-menu-item .main-menu-item-link:hover {
+    color: #0B1544;
+}
+
+.description, .price {
+    margin: 15px 0 0 5px;
+}
+
+.product-item {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+}
+.product-item img {
+    box-shadow: 10px 10px 5px 0 rgba(0, 0, 0, 0.75);
+}
+
+.prod-desc-wrapper {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+}
+.prod-desc-wrapper span {
+    font-weight: 600;
+}
+
+.buy {
+    width: 100px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    background-color: #0B1544;
+    padding: 10px 15px;
+    color: white;
+    box-shadow: 10px 10px 5px 0 rgba(0, 0, 0, 0.75);
+    margin-top: 50px;
+}
+
+.login {
+    display: flex;
+    justify-content: center;
+}
+.login .errors {
+    text-align: center;
+    background-color: red;
+    color: white;
+}
+.login .form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 250px;
+    height: 350px;
+    background-color: #0B1544;
+    box-shadow: 0 10px 10px 0 #0b1544;
+    opacity: 0.9;
+}
+.login input, .login button {
+    margin-top: 25px;
+    border: none;
+    padding: 3px 5px;
+    background-color: #fff;
+    color: #0B1544;
+}
+.login a {
+    color: white;
+    margin-top: 25px;
+}
+
+.btn {
+    display: inline-block;
+    background-color: #999;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 5px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #0B1544;
+    color: #fff;
+}
+
+table, th, td {
+    border: 1px solid #0B1544;
+}
+
+td {
+    padding: 8px;
+}
+
+.btn.disabled {
+    background-color: #ddd;
+    color: #999999;
+}
+
+/*# sourceMappingURL=main.css.map */

@@ -52,8 +52,14 @@ class Db
         return $stmt;
     }
 
+    public function queryObject($sql, $params, $class) {
+        $stmt = $this->query($sql, $params);
+        $stmt->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, $class);
+        return $stmt->fetch();
+    }
+
     public function queryOne($sql, $params) {
-        return $this->query($sql, $params)->fetchAll(PDO::FETCH_OBJ)[0];
+        return $this->query($sql, $params)->fetchAll()[0];
     }
 
     public function queryAll($sql, $params = []) {
@@ -61,10 +67,12 @@ class Db
     }
 
     public function exec($sql, $params) {
-        var_dump($sql);
-        die;
         $this->query($sql, $params);
         return true;
+    }
+
+    public function lastInsertId() {
+        return $this->connection->lastInsertId();
     }
 
 }

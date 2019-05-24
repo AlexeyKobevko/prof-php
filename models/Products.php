@@ -2,19 +2,31 @@
 
 namespace app\models;
 
-class Products extends Model
+class Products extends DbModel
 {
-    public $id;
-    public $name;
-    public $description;
-    public $price;
-    public $imgPath;
-    public $dateCreate;
-    public $dateChange;
-    public $isActive;
-    public $categoryId;
+    protected $id;
+    protected $name;
+    protected $description;
+    protected $price;
+    protected $imgPath;
+    protected $dateCreate;
+    protected $dateChange;
+    protected $isActive;
+    protected $categoryId;
 
-    public function __construct($name, $description, $price, $categoryId)
+    protected $flags = [
+        'id' => false,
+        'name' => false,
+        'description' => false,
+        'price' => false,
+        'imgPath' => false,
+        'dateCreate' => false,
+        'dateChange' => false,
+        'isActive' => false,
+        'categoryId' => false,
+    ];
+
+    public function __construct($name = null, $description = null, $price = null, $categoryId = null)
     {
         parent::__construct();
         $this->name = $name;
@@ -23,12 +35,33 @@ class Products extends Model
         $this->categoryId = $categoryId;
     }
 
-    public function getTableName()
+    public static function getTableName()
     {
         return 'products';
     }
 
+//    public function __set($field, $value) //TODO вынести в родителя
+//    {
+//        $this->$field = $value;
+//        $this->flags["{$field}"] = true;
+//    }
 
+    public function getProps() {
+        return $arrProps = [
+                    "id" => $this->id,
+                    "name" => $this->name,
+                    'description' => $this->description,
+                    'price' => $this->price,
+                    'imgPath' => $this->imgPath,
+                    'dateCreate' => $this->dateCreate,
+                    'dateChange' => $this->dateChange,
+                    'isActive' => $this->isActive,
+                    'categoryId' => $this->categoryId,
+                ];
+    }
 
+//    public function getFlags()  { //TODO вынести в родителя
+//        return $this->flags;
+//    }
 
 }
