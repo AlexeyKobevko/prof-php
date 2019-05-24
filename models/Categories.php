@@ -4,14 +4,36 @@
 namespace app\models;
 
 
-class Categories extends Model
+class Categories extends DbModel
 {
-    public $id;
-    public $name;
-    public $parentId;
+    protected $id;
+    protected $name;
+    protected $parentId;
 
-    public function getTableName()
+    protected $flags = [
+        'id' => false,
+        'name' => false,
+        'parentId' => false,
+    ];
+
+    public function __construct($name, $parentId)
+    {
+        parent::__construct();
+        $this->name = $name;
+        $this->parentId = $parentId;
+    }
+
+    public static function getTableName()
     {
         return 'categories';
+    }
+
+    public function getProps()
+    {
+        return $arrProps = [
+            "id" => $this->id,
+            "name" => $this->name,
+            'parentId' => $this->parentId,
+        ];
     }
 }

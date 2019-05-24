@@ -4,17 +4,45 @@
 namespace app\models;
 
 
-class Order extends Model
+class Order extends DbModel
 {
-    public $id;
-    public $userId;
-    public $address;
-    public $dateCreate;
-    public $dateChange;
-    public $status;
+    protected $id;
+    protected $userId;
+    protected $address;
+    protected $dateCreate;
+    protected $dateChange;
+    protected $status;
 
-    public function getTableName()
+    protected $flags = [
+        'id' => false,
+        'userId' => false,
+        'address' => false,
+        'dateCreate' => false,
+        'dateChange' => false,
+        'status' => false,
+    ];
+
+    public function __construct($userId, $address)
+    {
+        parent::__construct();
+        $this->userId = $userId;
+        $this->address = $address;
+    }
+
+    public static function getTableName()
     {
         return 'orders';
+    }
+
+    public function getProps()
+    {
+        return $arrProps = [
+            "id" => $this->id,
+            "userId" => $this->userId,
+            'address' => $this->address,
+            'dateCreate' => $this->dateCreate,
+            'dateChange' => $this->dateChange,
+            'status' => $this->status,
+        ];
     }
 }

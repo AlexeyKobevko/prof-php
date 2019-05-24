@@ -10,7 +10,31 @@ include "../config/main.php";
 
 spl_autoload_register([new Autoload(), 'loadClass']);
 
+$controllerName = $_GET['c'] ?: 'product';
+$actionName = $_GET['a'];
 
-$product = new Products('Плюшки', 'В лучших традициях Фрёкен Бок', 252, 1);
+$controllerClass= "app\\controllers\\" . ucfirst($controllerName) . "Controller";
 
-$product->insert();
+if (class_exists($controllerClass)) {
+    $controller = new $controllerClass();
+    $controller->runAction($actionName);
+}
+
+/** @var Products $product */
+
+//$product = Products::getOne(3);
+//$product->__set('price', 115);
+//var_dump($product);
+
+//$product->update();
+//var_dump($product);
+//$product = new Products('Щи', 'Ешь щи, а не получай по ним', 48.95, 1);
+
+//  $product = Products::getOne(3);
+//$product->__set('price', 108);
+//$product->__set('imgPath', 'где-то там');
+//$product->save();
+//var_dump($product);
+//$product->delete();
+
+// $product = new Products('Плюшки', 'В лучших традициях Фрёкен Бок', 252, 1);
