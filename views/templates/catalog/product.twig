@@ -1,0 +1,28 @@
+{% extends "index.twig" %}
+
+{% block title %}
+{{ product.name }}
+{% endblock %}
+
+{% block greeting %}
+<h1>{{ product.name }}</h1>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="product-wrapper">
+        <div class="product-item">
+            <img src="/{{ product.imgPath }}" alt="{{ product.name }}">
+            <div class="prod-desc-wrapper">
+                <div class="description">{{ product.description }}</div>
+                <div class="price"><span>Цена:</span> {{ product.price }} руб.</div>
+                {% if session.login is defined %}
+                    <div>
+                        <a class="btn addToCartBtn" data-id="{{ product.id }}">Купить</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

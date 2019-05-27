@@ -13,12 +13,12 @@
         </div>
         <ul class="main-menu">
             <li class="main-menu-item">
-                <a class="main-menu-item-link" href="/?c=product&a=catalog">Главная</a>
+                <a class="main-menu-item-link" href="/">Главная</a>
             </li><li class="main-menu-item">
                 <a class="main-menu-item-link" href="/?c=product&a=catalog">Каталог</a>
             </li>
             <li class="main-menu-item">
-                <a class="main-menu-item-link" href="#">Галерея</a>
+                <a class="main-menu-item-link" href="/?c=user">Пользователи</a>
             </li>
             <li class="main-menu-item"><a class="main-menu-item-link" href="/?c=basket">Корзина</a></li>
         </ul>

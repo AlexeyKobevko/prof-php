@@ -8,18 +8,10 @@ use app\models\Products;
 
 class ProductController extends Controller
 {
-    protected $action;
-    protected $layout = "main";
-    protected $useLayout = true;
+    protected $template = 'catalog/catalog.twig';
 
-    public function runAction($action = null) {
-        $this->action = $action ?: 'catalog';
-        $method = "action" . ucfirst($this->action);
-        if (method_exists($this, $method)) {
-            $this->$method();
-        } else {
-            echo "404";
-        }
+    public function actionIndex() {
+        echo $this->renderTwig($this->template);
     }
 
     public function actionCard() {
@@ -34,28 +26,18 @@ class ProductController extends Controller
 
     public function actionCatalog() {
 
-        $products = Products::getAll();
-        $result = '';
+        $page = (int)$_GET['page'] ?? 0;
+        $pagination = 5;
+        $from = 0;
+        $limit = ($page + 1) * $pagination + $page;
+        $products = Products::getLimit($from, $limit);
+//        $page++;
 
-        foreach ($products as $product) {
-            $name = $product['name'];
-            $imgPath = $product['imgPath'];
-            $description = $product['description'];
-            $price = $product['price'];
-            $id = $product['id'];
-
-            $result .= $this->renderTemplate("singleProduct", [
-                'name' => $name,
-                'imgPath' => $imgPath,
-                'description' => $description,
-                'price' => $price,
-                'id' => $id,
-            ]);
-        }
-
-        echo $this->render("catalog", [
-            'content' => $result,
-        ]);
+//        echo $this->render("catalog", [
+//            'products' => $products,
+//            'page' => $page,
+//        ]);
+        echo $this->renderTwig(['products' => $products, 'page' => $page]);
     }
 
 }

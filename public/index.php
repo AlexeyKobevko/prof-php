@@ -8,9 +8,12 @@ use app\engine\Autoload;
 include "../engine/Autoload.php";
 include "../config/main.php";
 
+
 spl_autoload_register([new Autoload(), 'loadClass']);
 
-$controllerName = $_GET['c'] ?: 'product';
+session_start();
+
+$controllerName = $_GET['c'] ?: 'index';
 $actionName = $_GET['a'];
 
 $controllerClass= "app\\controllers\\" . ucfirst($controllerName) . "Controller";
@@ -22,7 +25,7 @@ if (class_exists($controllerClass)) {
 
 /** @var Products $product */
 
-//$product = Products::getOne(3);
+//$product = Products::getOne(8);
 //$product->__set('price', 115);
 //var_dump($product);
 
@@ -32,7 +35,7 @@ if (class_exists($controllerClass)) {
 
 //  $product = Products::getOne(3);
 //$product->__set('price', 108);
-//$product->__set('imgPath', 'где-то там');
+//$product->__set('imgPath', 'img/placeholder.png');
 //$product->save();
 //var_dump($product);
 //$product->delete();
