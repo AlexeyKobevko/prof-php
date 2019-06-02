@@ -3,6 +3,7 @@
 namespace app\models;
 use app\interfaces\IModel;
 use app\engine\Db;
+use \DateTime;
 
 
 abstract class DbModel extends Model implements IModel
@@ -26,18 +27,24 @@ abstract class DbModel extends Model implements IModel
         return Db::getInstance()->queryAll($sql);
     }
 
+    public function getLimit($from, $limit) {
+        $tableName = static::getTableName();
+        $sql = "SELECT * FROM {$tableName} LIMIT :from, :limit";
+        return Db::getInstance()->queryAll($sql, [':from' => $from, ':limit' => $limit]);
+    }
+
     protected function insert() {
-//        $arr = json_decode(json_encode($this), true);
-        $props = $this->getProps();
 
         $tableName = static::getTableName();
 
         $queryParams = [];
         $queryColumns = [];
 
-        foreach ($props as $key => $val) {
+        foreach ($this as $key => $val) {
 
             if (is_null($val)) {
+                continue;
+            } elseif ($key == "db" || $key == "flags") {
                 continue;
             } else {
                 $queryParams[":{$key}"] = $val;
@@ -48,7 +55,7 @@ abstract class DbModel extends Model implements IModel
         $queryColumns = implode(", ", $queryColumns);
         $queryValues = implode(", ", array_keys($queryParams));
 
-        $sql = "INSERT INTO `{$tableName}`({$queryColumns}) VALUES ($queryValues)";
+        $sql = "INSERT INTO `{$tableName}` `({$queryColumns})` VALUES ({$queryValues})";
 
         Db::getInstance()->exec($sql, $queryParams);
 
@@ -63,33 +70,44 @@ abstract class DbModel extends Model implements IModel
     }
 
     protected function update() {
-        //UPDATE `products` SET somethingChangeble = value WHERE id=$id;
-        $props = $this->getProps();
+
         $tableName = static::getTableName();
         $flags = $this->getFlags();
-        $column = '';
 
-        foreach ($flags as $key => $val) {
-            if ($val) {
-                $column = $key;
-            }
-        }
-//TODO поковырять конкатенацией, чтобы строилась строка, если во флагах более одного тру
-        $value = $props["{$column}"];
-        $date = new \DateTime();
+        $date = new DateTime();
         $date = $date->format('Y-m-d H:i:s');
 
-        $sql = "UPDATE `{$tableName}` SET `{$column}`= {$value}, dateChange = :dateChange WHERE id = :id";
+        $queryParams = [];
+        $querySet = [];
 
-        Db::getInstance()->exec($sql, ["id" => $this->id, "dateChange" => $date]);
+        foreach ($flags as $key => $val) {
+
+            if ($val) {
+                $queryParams[":{$key}"] = $this->$key;
+                $querySet[] = "`$key` = :{$key}";
+            }
+        }
+
+        $queryParams[':dateChange'] = $date;
+        $querySet[] = "`dateChange` = :dateChange";
+
+        $querySet = implode(", ", $querySet);
+
+        $sql = "UPDATE `{$tableName}` SET {$querySet} WHERE id = :id";
+
+        $queryParams[':id'] = $this->id;
+
+        Db::getInstance()->exec($sql, $queryParams);
     }
 
     public function save()
     {
 
-        $flags = $this->getFlags();
-
-        in_array(true, $flags, true) ? $this->update() : $this->insert();
+        if (is_null($this->id)) {
+            $this->insert();
+        } else {
+            $this->update();
+        }
 
     }
 

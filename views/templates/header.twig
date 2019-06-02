@@ -1,0 +1,25 @@
+<!-- begin: header.twig -->
+<div class="header">
+    <div class="logo">
+        <a href="/"><img src="img/placeholder.com-logo2.png" alt=""></a>
+    </div>
+    <ul class="main-menu">
+        <li class="main-menu-item">
+            <a class="main-menu-item-link" href="/">Главная</a>
+        </li>
+        <li class="main-menu-item">
+            <a class="main-menu-item-link" href="/?c=product&a=catalog">Каталог</a>
+        </li>
+        <li class="main-menu-item">
+            <a class="main-menu-item-link" href="/?c=users">Пользователи</a>
+        </li>
+        {% if session.login is defined %}
+            <li class="main-menu-item"><a class="main-menu-item-link" href="/profile">Профиль</a></li>
+            <li class="main-menu-item"><a class="main-menu-item-link" href="/basket">Корзина</a></li>
+            <li class="main-menu-item"><a class="main-menu-item-link" href="/orders">Заказы</a></li>
+        {% else %}
+            <li class="main-menu-item"><a class="main-menu-item-link" href="/profile/login">Войти</a></li>
+        {% endif %}
+    </ul>
+</div>
+<!-- end: header.twig -->
