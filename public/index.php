@@ -1,25 +1,29 @@
 <?php
-
-
-use app\models\{ Products, Users };
-use app\engine\Autoload;
-
+session_start();
 
 include "../engine/Autoload.php";
 include "../config/main.php";
+require_once '../vendor/autoload.php';
+
+
+use app\models\entities\Products;
+use app\engine\Autoload;
+use app\engine\TwigRender;
+use app\engine\Request;
+
 
 
 spl_autoload_register([new Autoload(), 'loadClass']);
 
-session_start();
+$request = new Request();
 
-$controllerName = $_GET['c'] ?: 'index';
-$actionName = $_GET['a'];
+$controllerName = $request->getControllerName() ?: 'product';
+$actionName = $request->getActionName();
 
 $controllerClass= "app\\controllers\\" . ucfirst($controllerName) . "Controller";
 
 if (class_exists($controllerClass)) {
-    $controller = new $controllerClass();
+    $controller = new $controllerClass(new TwigRender());
     $controller->runAction($actionName);
 }
 
@@ -33,7 +37,7 @@ if (class_exists($controllerClass)) {
 //var_dump($product);
 //$product = new Products('Щи', 'Ешь щи, а не получай по ним', 48.95, 1);
 
-//  $product = Products::getOne(3);
+//$product = Products::getOne(3);
 //$product->__set('price', 108);
 //$product->__set('imgPath', 'img/placeholder.png');
 //$product->save();

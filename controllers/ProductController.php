@@ -3,23 +3,22 @@
 
 namespace app\controllers;
 
-use app\models\Products;
+use app\models\entities\Products;
+use app\models\repositories\ProductsRepository;
 
 
 class ProductController extends Controller
 {
-    protected $template = 'catalog/catalog.twig';
-
     public function actionIndex() {
-        echo $this->renderTwig($this->template);
+        echo $this->render('index');
     }
 
     public function actionCard() {
 
-        $id = $_GET['id'];
+        $id = (int)$_GET['id'];
+        $product = (new ProductsRepository())->getOne($id);
 
-        $product = Products::getOne($id);
-        echo $this->render("card", [
+        echo $this->render("catalog/product", [
             'product' => $product,
         ]);
     }
@@ -30,14 +29,29 @@ class ProductController extends Controller
         $pagination = 5;
         $from = 0;
         $limit = ($page + 1) * $pagination + $page;
-        $products = Products::getLimit($from, $limit);
-//        $page++;
+        $products = (new ProductsRepository())->getLimit($from, $limit);
+        $page ++;
 
-//        echo $this->render("catalog", [
-//            'products' => $products,
-//            'page' => $page,
-//        ]);
-        echo $this->renderTwig(['products' => $products, 'page' => $page]);
+        echo $this->render('catalog/catalog',[
+            'products' => $products,
+            'page' => $page
+        ]);
+    }
+
+    public function actionApiCatalog()
+    {
+        $page = (int)$_GET['page'] ?? 0;
+        $page++;
+        $limit = $page * 2;
+        $products = Products::getLimit(0, $limit);
+
+        header('Content-Type: application/json');
+
+        echo json_encode([
+            'products' => $products,
+            'page' => $page
+        ], JSON_UNESCAPED_UNICODE);
+
     }
 
 }

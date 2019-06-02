@@ -44,6 +44,7 @@ h1 {
     background-size: cover;
     background-position: center;
     opacity: 0.8;
+    margin-bottom: 20px;
 }
 
 .logo {
