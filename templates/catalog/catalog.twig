@@ -1,0 +1,20 @@
+
+<div class="catalog">
+    {% for product in products %}
+        <div class="catalog-item">
+            <a href="/product/card/?id={{ product.id }}">
+                <img src="/{{ product.imgPath }}" alt="image-{{ product.id }}" class="product-image"/>
+            </a>
+            <div class="prod-desc-wrapper">
+                <h3>{{ product.name }}</h3>
+                <div class="description">{{ product.description }}</div>
+                <div class="price"><span>Цена:</span> {{ product.price }} руб.</div>
+                <div>
+                    <a class="btn addToCartBtn" data-id="{{ product.id }}">Купить</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<a href="?c=product&a=catalog&page={{ page }}">Еще</a>

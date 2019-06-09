@@ -1,9 +1,10 @@
 <?php
 
-namespace app\models;
+namespace app\models\entities;
 
 
-class Users extends DbModel
+
+class Users extends DataEntity
 {
     protected $id;
     protected $name;
@@ -25,30 +26,10 @@ class Users extends DbModel
 
     public function __construct($name = null, $email = null, $login = null, $password = null)
     {
-        parent::__construct();
         $this->name = $name;
         $this->email = $email;
         $this->login = $login;
         $this->password = $password;
     }
-
-    public static function getTableName()
-    {
-        return 'users';
-    }
-
-    public function getProps()
-    {
-        return $arrProps = [
-            "id" => $this->id,
-            "name" => $this->name,
-            'email' => $this->email,
-            'login' => $this->login,
-            'password' => $this->password,
-            'dateCreate' => $this->dateCreate,
-            'dateChange' => $this->dateChange,
-        ];
-    }
-
 
 }

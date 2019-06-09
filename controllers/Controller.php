@@ -3,34 +3,33 @@
 
 namespace app\controllers;
 
-require_once '../vendor/autoload.php';
 
-use app\engine\TemplaterTwig;
-use Twig\Environment;
-use Twig\Loader\FilesystemLoader;
+use app\interfaces\IRender;
+use app\models\repositories\BasketRepository;
+use app\models\repositories\UsersRepository;
 
-abstract class Controller
+
+abstract class Controller implements IRender
 {
     protected $action;
-    protected $layout = "index";
+    protected $layout = "main";
     protected $useLayout = true;
 
-    protected $template;
-    protected $twig;
+    private $renderer;
 
-    public $session;
-
-    public function __construct()
+    public function __construct(IRender $renderer)
     {
-        $this->session = &$_SESSION;
-        $this->twig = TemplaterTwig::getInstance()->twig;
+        $this->renderer = $renderer;
     }
 
     public function runAction($action = null) {
         $this->action = $action ?: 'index';
         $method = "action" . ucfirst($this->action);
+
         if (method_exists($this, $method)) {
+
             $this->$method();
+
         } else {
             echo "404";
         }
@@ -40,32 +39,15 @@ abstract class Controller
 
         if ($this->useLayout) {
             return $this->renderTemplate("layouts/{$this->layout}", [
-                'content' => $this->renderTemplate($template, $params)
+                'content' => $this->renderTemplate($template, $params),
             ]);
         } else {
-            return $this->renderTemplate($template, $params = []);
+            return $this->renderTemplate($template, $params);
         }
     }
 
     public function renderTemplate($template, $params = []) {
-        ob_start();
-        extract($params);
-        $templatePath = "../views/templates/" . $template . ".php";
-        if (file_exists($templatePath)) {
-            include $templatePath;
-        } return ob_get_clean();
-    }
-
-    public function renderTwig($template = null, $params = [])
-    {
-        if (!$template) {
-            $template = $this->template;
-        }
-            $twig = $this->twig->load($template);
-            $params = array_merge([
-                'session' => $this->session,
-            ], $params);
-            return $twig->render($params);
+        return $this->renderer->renderTemplate($template, $params);
     }
 
 }
