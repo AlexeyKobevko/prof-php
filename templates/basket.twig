@@ -1,1 +1,39 @@
 <h2>Корзина</h2>
+
+<table>
+    <thead>
+    <tr>
+        <th>Товар</th>
+        <th>Описание</th>
+        <th>Действия</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for product in products %}
+
+        <tr id="{{ product.id_basket }}">
+            <td data-col="name">
+                <a href="/product/card/?id={{ product.id_prod }}">
+                    {{ product.name }}
+                </a>
+            </td>
+            <td data-col="description">
+                {{ product.description }}
+            </td>
+            <td data-col="actions">
+                <button class="btn removeCartBtn" data-id ={{ product.id_basket }}>Удалить</button>
+            </td>
+        </tr>
+
+    {% endfor %}
+    </tbody>
+</table>
+
+<br><hr><br>
+<div>
+    Адрес доставки
+    <input type="text" name="address" />
+</div>
+<div>
+    <a class="btn createOrderBtn">Оформить заказ</a>
+</div>

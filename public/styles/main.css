@@ -76,6 +76,17 @@ h1 {
     color: #0B1544;
 }
 
+.relative {
+    position: relative;
+}
+
+.count {
+    position: absolute;
+    color: red;
+    top: -10px;
+    right: -5px;
+}
+
 .description, .price {
     margin: 15px 0 0 5px;
 }

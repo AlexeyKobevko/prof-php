@@ -12,6 +12,8 @@ class UsersRepository extends Repository
 
     public function auth($login, $pass) {
         $user = $this->getOneWhere('login', $login);
+var_dump($this);
+die;
         if ($pass == $user->pass) {
             $_SESSION['login'] = $login;
             return true;

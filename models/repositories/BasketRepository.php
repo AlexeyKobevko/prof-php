@@ -15,6 +15,7 @@ class BasketRepository extends Repository
                 FROM basket2 b,products p 
                 WHERE b.product_id=p.id 
                 AND session_id = :session";
+
         return $this->db->queryAll($sql, ['session' => $session]);
     }
 
