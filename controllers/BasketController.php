@@ -18,19 +18,22 @@ class BasketController extends Controller
 
     public function actionAddBasket() {
 
-        (new Basket(null, session_id(), (new Request())->getParams()['id']))->save();
+        (new BasketRepository())->save(new Basket(session_id(), (new Request())->getParams()['id']));
+
 
         $count = (new BasketRepository())->getCountWhere('session_id', session_id());
         $response = ['count' => $count];
-
         header('Content-Type: application/json');
         echo json_encode($response);
+
     }
 
     public function actionDelete() {
 
         $id = (new Request())->getParams()['id'];
-        $basket = (new BasketRepository())->getOne($id);
+
+        $basket = (new BasketRepository())->getOneObj($id);
+
         if (session_id() == $basket->session_id) {
             (new BasketRepository())->delete($basket);
             $count = (new BasketRepository())->getCountWhere('session_id', session_id());

@@ -19,6 +19,12 @@ abstract class Repository
         $this->db = Db::getInstance();
     }
 
+    public function getOneObj($id) {
+        $tableName = $this->getTableName();
+        $sql = "SELECT * FROM {$tableName} WHERE id = :id";
+        return $this->db->queryObject($sql, ['id' => $id], $this->getEntityClass());
+    }
+
     public function getOne($id) {
         $tableName = $this->getTableName();
         $sql = "SELECT * FROM {$tableName} WHERE id = :id";
@@ -37,6 +43,13 @@ abstract class Repository
         return $this->db->queryOne($sql, ["$field" => $value])['count'];
     }
 
+    public function getOneWhere($field, $value) {
+        $tableName = $this->getTableName();
+        $sql = "SELECT * FROM {$tableName} WHERE `$field`=:$field";
+
+        return $this->db->queryObject($sql, ["$field"=>$value], $this->getEntityClass());
+    }
+
     public function getLimit($from, $limit) {
         $tableName = $this->getTableName();
         $sql = "SELECT * FROM {$tableName} LIMIT :from, :limit";
@@ -47,27 +60,22 @@ abstract class Repository
 
         $tableName = $this->getTableName();
 
-        $queryParams = [];
-        $queryColumns = [];
+        $params = [];
+        $columns = [];
 
-        foreach ($entity as $key => $val) {
+        foreach ($entity->getProperties() as $key => $value) {
 
-            if (is_null($val)) {
-                continue;
-            } elseif ($key == "db" || $key == "id" || $key == "properties") {
-                continue;
-            } else {
-                $queryParams[":{$key}"] = $val;
-                $queryColumns[] = "`$key`";
-            }
+            if ($key == "db" || $key == "id" || $key == "properties") continue;
+            $columns[] = "`$key`";
+            $params[":{$key}"] = $value;
         }
 
-        $queryColumns = implode(", ", $queryColumns);
-        $queryValues = implode(", ", array_keys($queryParams));
+        $columns = implode(", ", $columns);
+        $value = implode(", ", array_keys($params));
 
-        $sql = "INSERT INTO `{$tableName}` `({$queryColumns})` VALUES ({$queryValues})";
+        $sql = "INSERT INTO {$tableName} ({$columns}) VALUES ({$value})";
 
-        $this->db->exec($sql, $queryParams);
+        $this->db->exec($sql, $params);
 
         $this->id = $this->db->lastInsertId();
     }
@@ -83,7 +91,7 @@ abstract class Repository
     protected function update(DataEntity $entity) {
 
         $tableName = $this->getTableName();
-        $flags = $this->getFlags();
+        $flags = $entity->getFlags();
 
         $date = new DateTime();
         $date = $date->format('Y-m-d H:i:s');
@@ -115,7 +123,6 @@ abstract class Repository
 
     public function save(DataEntity $entity)
     {
-
         if (is_null($entity->id))
             $this->insert($entity);
         else
@@ -124,4 +131,5 @@ abstract class Repository
     }
 
     abstract public function getTableName();
+
 }

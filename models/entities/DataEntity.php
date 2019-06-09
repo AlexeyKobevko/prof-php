@@ -23,4 +23,13 @@ abstract class DataEntity extends Model
     {
         return $this->$name;
     }
+
+    /**
+     * @return array
+     */
+    public function getProperties(): array
+    {
+        return $this->properties;
+    }
+
 }

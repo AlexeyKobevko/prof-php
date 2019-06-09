@@ -6,13 +6,10 @@ namespace app\models\entities;
 
 class Users extends DataEntity
 {
-    protected $id;
-    protected $name;
-    protected $email;
-    protected $login;
-    protected $password;
-    protected $dateCreate;
-    protected $dateChange;
+    public $id;
+    public $login;
+    public $password;
+
 
     protected $flags = [
         'id' => false,
@@ -24,10 +21,8 @@ class Users extends DataEntity
         'dateChange' => false,
     ];
 
-    public function __construct($name = null, $email = null, $login = null, $password = null)
+    public function __construct($login = null, $password = null)
     {
-        $this->name = $name;
-        $this->email = $email;
         $this->login = $login;
         $this->password = $password;
     }

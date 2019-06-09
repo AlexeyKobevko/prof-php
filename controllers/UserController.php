@@ -5,6 +5,7 @@ namespace app\controllers;
 
 
 use app\models\repositories\UsersRepository;
+use app\engine\Request;
 
 
 class UserController extends Controller
@@ -23,16 +24,17 @@ class UserController extends Controller
 
     public function actionLogin()
     {
-        //Авторизуем пользователя
-        //Переделать на Request !!!!
-        if (isset($_POST['submit'])) {
+
+        if (isset((new Request())->getParams()['submit'])) {
             $login = $_POST['login'];
-            $pass = $_POST['pass'];
+            $pass = $_POST['password'];
 
             if (!(new UsersRepository())->auth($login, $pass)) {
                 Die("Не верный пароль!");
             } else
-                header("Location: /");
+
+                echo 'URA!!!';
+//                header("Location: /");
         }
     }
 }
